@@ -1,0 +1,106 @@
+HashMap Vs Hashtable
+
+
+1. Java中的HashMap的工作原理是什么？
+  ******first look at : http://blog.csdn.net/vking_wang/article/details/14166593
+
+  second version:
+  链接：https://www.nowcoder.com/questionTerminal/6bd3857199564b3fb2d3fee4f4de06ea
+       https://www.nowcoder.com/questionTerminal/6bd3857199564b3fb2d3fee4f4de06ea
+       https://www.nowcoder.com/questionTerminal/040f6133720941b3b782b5cceaa27198
+
+  (1) Java8对hashmap做了优化 ，底层有两种实现方法，一种是数组和链表，一种是数组和红黑树，hsahmap会根据数据量选择存储结构
+  if (binCount >= TREEIFY_THRESHOLD - 1) 
+  当符合这个条件的时候，把链表变成treemap，这样查找效率从o(n)变成了o(log n)
+
+  (2) HashMap保存数据的过程为：首先判断key是否为null，若为null，则直接调用putForNullKey方法。
+  若不为空则先计算key的hash值，然后根据hash值搜索在table数组中的索引位置，如果table数组在该位置处有元素，则通过比较是否存在相同的key，若存在则覆盖原来key的value，否则将该元素保存在链头（最先保存的元素放在链尾）。
+  若table在该处没有元素，则直接保存。
+
+
+public V put(K key, V value) {
+ 
+        //当key为null，调用putForNullKey方法，保存null与table第一个位置中，这是HashMap允许为null的原因
+ 
+        if (key == null)
+ 
+            return putForNullKey(value);
+ 
+        //计算key的hash值
+ 
+        int hash = hash(key.hashCode());                  ------(1)
+ 
+        //计算key hash值在table数组中的位置
+ 
+        int i = indexFor(hash, table.length);             ------(2)
+ 
+        //从i出开始迭代e,找到key保存的位置
+ 
+        for (Entry<K, V> e = table[i]; e != null; e = e.next) {
+ 
+            Object k;
+ 
+            //判断该条链上是否有hash值相同的(key相同)
+ 
+            //若存在相同，则直接覆盖value，返回旧value
+ 
+            if (e.hash == hash && ((k = e.key) == key || key.equals(k))) {
+ 
+                V oldValue = e.value;    //旧值=新值
+ 
+                e.value = value;
+ 
+                e.recordAccess(this);
+ 
+                return oldValue;     //返回旧值
+ 
+            }
+ 
+        }
+ 
+        //修改次数增加1
+ 
+        modCount++;
+ 
+        //将key、value添加至i位置处
+ 
+        addEntry(hash, key, value, i);
+ 
+        return null;
+ 
+    }
+
+2. hashCode()和equals()方法的重要性体现在什么地方？
+  ***** first look at: http://blog.csdn.net/javazejian/article/details/51348320
+
+   (a) HashMap的很多函数要基于equal()函数和hashCode()函数。hashCode()用来定位要存放的位置，equal()用来判断是否相等。 
+   那么，相等的概念是什么？ 
+   Object版本的equal只是简单地判断是不是同一个实例。但是有的时候，我们想要的的是逻辑上的相等。比如有一个学生类student，有一个属性studentID，只要studentID相等，不是同一个实例我们也认为是同一学生。当我们认为判定equals的相等应该是逻辑上的相等而不是只是判断是不是内存中的同一个东西的时候，就需要重写equal()。而涉及到HashMap的时候，重写了equals()，就需要重写hashCode()
+
+   (b) 我们总结一下几条基本原则 
+   (1). 同一个对象（没有发生过修改）无论何时调用hashCode()得到的返回值必须一样。 
+      如果一个key对象在put的时候调用hashCode()决定了存放的位置，而在get的时候调用hashCode()得到了不一样的返回值，这个值映射到了一个和原来不一样的地方，那么肯定就找不到原来那个键值对了。  
+   (2). hashCode()的返回值相等的对象不一定相等，通过hashCode()和equals()必须能唯一确定一个对象 
+      不相等的对象的hashCode()的结果可以相等。hashCode()在注意关注碰撞问题的时候，也要关注生成速度问题，完美hash不现实
+   (3). 一旦重写了equals()函数（重写equals的时候还要注意要满足自反性、对称性、传递性、一致性），就必须重写hashCode()函数。而且hashCode()的生成哈希值的依据应该是equals()中用来比较是否相等的字段 
+      如果两个由equals()规定相等的对象生成的hashCode不等，对于hashMap来说，他们很可能分别映射到不同位置，没有调用equals()比较是否相等的机会，两个实际上相等的对象可能被插入不同位置，出现错误。其他一些基于哈希方法的集合类可能也会有这个问题
+
+   (c) 哈希表判断通过hashCode和equals方法判断元素是否相同的步骤如下所示：
+       先看hashCode的值是否相同，因为这个是逻辑内存地址，如果
+
+                不相同：则表示对象不相同
+
+                如果相同：继续在桶结构中执行equals方法，equals方法返回
+
+                       True：表示对象相同，
+
+                       Fasle：表示对象不相同
+
+       只有hashCode和equals方法都返回true，才表示对象相同
+
+  3. HashMap和Hashtable有什么区别？
+     (1) HashMap和Hashtable都实现了Map接口，因此很多特性非常相似。但是，他们有以下不同点：
+     (2) HashMap允许键和值是null，而Hashtable不允许键或者值是null。
+     (3) Hashtable是同步的，而HashMap不是。因此，HashMap更适合于单线程环境，而Hashtable适合于多线程环境。
+     (4) HashMap提供了可供应用迭代的键的集合，因此，HashMap是快速失败的。另一方面，Hashtable提供了对键的列举(Enumeration)。
+         一般认为Hashtable是一个遗留的类。

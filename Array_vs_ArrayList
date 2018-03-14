@@ -1,0 +1,21 @@
+Array Vs ArrayList
+
+链接：https://www.nowcoder.com/questionTerminal/a94a9896128a4498bb0df936da62f36f
+
+1. 数组(Array)和列表(ArrayList)有什么区别？什么时候应该使用Array而不是ArrayList？
+
+   ArrayList可以算是Array的加强版，（对array有所取舍的加强）。
+
+
+   (a)存储内容比较：
+   (1) Array数组可以包含基本类型和对象类型，
+   (2) ArrayList却只能包含对象类型。
+   但是需要注意的是：Array数组在存放的时候一定是同种类型的元素。ArrayList就不一定了，因为ArrayList可以存储Object。
+
+
+   (b)空间大小比较：
+   (1)它的空间大小是固定的，空间不够时也不能再次申请，所以需要事前确定合适的空间大小。
+   (2)ArrayList的空间是动态增长的，如果空间不够，它会创建一个空间比原空间大一倍的新数组，然后将所有元素复制到新数组中，接着抛弃旧数组。而且，每次添加新的元素的时候都会检查内部数组的空间是否足够。（比较麻烦的地方）。
+
+   (c)方法上的比较：
+      ArrayList作为Array的增强版，当然是在方法上比Array更多样化，比如添加全部addAll()、删除全部removeAll()、返回迭代器iterator()等。
