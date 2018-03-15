@@ -1,0 +1,22 @@
+HashSet vs TreeSet
+
+reference from : https://beginnersbook.com/2014/08/difference-between-hashset-and-treeset/
+
+1. Difference:
+   1) HashSet gives better performance (faster) than TreeSet for the operations
+      like add, remove, contains, size etc. HashSet offers constant time cost while
+      TreeSet offers log(n) time cost for such operations.
+
+   2) HashSet does not maintain any order of elements while TreeSet elements
+      are sorted in ascending order by default.
+
+
+2. Similarities:
+   1) Both HashSet and TreeSet does not hold duplicate elements,
+      which means both of these are duplicate free.
+
+   2) If you want a sorted Set then it is better to add elements to HashSet
+      and then convert it into TreeSet rather than creating a TreeSet and adding elements to it.
+
+   3) Both of these classes are non-synchronized that means they are
+      not thread-safe and should be synchronized explicitly when there is a need of thread-safe operations.

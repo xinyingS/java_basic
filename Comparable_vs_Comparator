@@ -1,0 +1,56 @@
+Comparable Vs Comparator
+
+reference from: https://www.cnblogs.com/sodawoods-blogs/p/6413513.html
+                http://blog.csdn.net/u012767369/article/details/55002748
+
+1、一个类在设计之初就要实现对该类对象的排序功能，那么这个类要实现Comparable接口，实现public int compareTo(T t)方法。如代码中的Student类。
+对于实现Comparable接口的类，
+
+调用java.util.Arrays.sort(Object[] a)对包含对象实例的数组进行排序，
+
+调用java.util.Collections.sort(List<T> list)对包含对象实例的list进行排序。
+
+
+2、若一个类在设计之初并没有对排序功能的需求，而是在后续的使用中想要对这个类添加排序的功能，如Teacher类。这时的办法是实现一个比较器类，
+如TeacherComparator类，实现public int compare(T t1, T t2)让该类实现Comparator接口。
+
+调用java.util.Arrays.sort(T[] a, Comparator<? super T> c) 对包含对象实例的数组进行排序，
+调用java.util.Collections.sort(List<T> list, Comparator<? super T> c) 对包含对象实例的list进行排序。
+
+3、a.compareTo(b)方法和compare(a,b)方法，在方法中判断两个对象的某个或某些属性的大小关系，若a的某个属性比b的属性小，返回负整数，若相等，返回0，否则返回正整数。
+
+if a.attr < b.attr
+
+return -1
+
+else
+
+return 1
+
+上面即为按照某属性从小到大排序。
+
+
+
+if a.attr < b.attr
+
+return 1
+
+else
+
+
+
+return -1
+
+上面为按照某属性从大到小排序。
+
+
+4.
+Comparable和Comparator都是用来实现集合中元素的比较、排序的。
+Comparable是在集合内部定义的方法实现的排序，位于java.lang下。
+Comparator是在集合外部实现的排序，位于java.util下。
+
+5.
+Comparable是一个对象本身就已经支持自比较所需要实现的接口，如String、Integer自己就实现了Comparable接口，可完成比较大小操作。自定义类要在加入list容器中后能够排序，也可以实现Comparable接口，在用Collections类的sort方法排序时若不指定Comparator，那就以自然顺序排序。所谓自然顺序就是实现Comparable接口设定的排序方式。
+
+6.
+Comparator是一个专用的比较器，当这个对象不支持自比较或者自比较函数不能满足要求时，可写一个比较器来完成两个对象之间大小的比较。Comparator体现了一种策略模式(strategy design pattern)，就是不改变对象自身，而用一个策略对象(strategy object)来改变它的行为。
