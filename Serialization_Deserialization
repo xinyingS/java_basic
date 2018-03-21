@@ -1,0 +1,10 @@
+Serialization vs Deserialization
+
+
+1. 解释下Serialization和Deserialization。
+
+   序列化，实现序列化和反序列化的对象必须实现serializable接口，序列化是将对象变成字节流，存储到磁盘或网络。
+   反序列化是序列化的反过程。
+
+   序列化: 序列化是将对象转换为容易传输的格式的过程。例如，可以序列化一个对象，然后使用 HTTP 通过 Internet 在客户端和服务器之间传输该对象。
+   在另一端，反序列化将从该流重新构造对象。

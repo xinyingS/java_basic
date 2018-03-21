@@ -1,0 +1,29 @@
+JDBC
+
+reference from ：https://www.nowcoder.com/questionTerminal/35c6431776194881b43277a72db667b4
+
+1. 什么是JDBC？
+
+   JDBC（Java DataBase Connectivity）,是一套面向对象的应用程序接口（API），制定了统一的访问各类关系数据库的标准接口，为各个数据库厂商提供了标准的实现。
+   通过JDBC技术，开发人员可以用纯Java语言和标准的SQL语句编写完整的数据库应用程序，并且真正地实现了软件的跨平台性。
+
+   (1) 通常情况下使用JDBC完成以下操作：
+   1.同数据库建立连接；
+   2.向数据库发送SQL语句；
+   3.处理从数据库返回的结果；
+
+   (2) JDBC具有下列优点：
+   1.JDBC与ODBC(Open Database Connectivity，即开放数据库互连）十分相似，便于软件开发人员理解；
+   2.JDBC使软件开发人员从复杂的驱动程序编写工作中解脱出来，可以完全专注于业务逻辑开发；
+   3.JDBC支持多种关系型数据库，大大增加了软件的可移植性；
+   4.JDBC API是面向对象的，软件开发人员可以将常用的方法进行二次封装，从而提高代码的重用性；
+
+2. 解释下驱动(Driver)在JDBC中的角色。
+
+   JDBC驱动提供了特定厂商对JDBC API接口类的实现，驱动必须要提供java.sql包下面这些类的实现：
+   Connection, Statement, PreparedStatement,CallableStatement, ResultSet和Driver。
+
+3. 数据库连接池是什么意思？
+
+   像打开关闭数据库连接这种和数据库的交互可能是很费时的，尤其是当客户端数量增加的时候，会消耗大量的资源，成本是非常高的。可以在应用服务器启动的时候建立很多个数据库连接并维护在一个池中。
+   连接请求由池中的连接提供。在连接使用完毕以后，把连接归还到池中，以用于满足将来更多的请求。
