@@ -1,0 +1,10 @@
+Java Exception
+
+1. Java中的两种异常类型是什么？他们有什么区别？
+
+   Java中有两种异常：受检查的(checked)异常和不受检查的(unchecked)异常。不受检查的异常不需要在方法或者是构造函数上声明，就算方法或者是构造函数的执行可能会抛出这样的异常，并且不受检查的异常可以传播到方法或者是构造函数的外面。
+   相反，受检查的异常必须要用throws语句在方法或者是构造函数上声明。
+
+   Throwable是所有异常的根，java.lang.Throwable
+   Error是错误，java.lang.Error
+   Exception是异常，java.lang.Exception
