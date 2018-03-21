@@ -1,5 +1,7 @@
 Java Exception
 
+reference from: https://www.nowcoder.com/questionTerminal/a679dbc19a6a41c580a50e86fbdfc185
+
 1. Java中的两种异常类型是什么？他们有什么区别？
 
    Java中有两种异常：受检查的(checked)异常和不受检查的(unchecked)异常。不受检查的异常不需要在方法或者是构造函数上声明，就算方法或者是构造函数的执行可能会抛出这样的异常，并且不受检查的异常可以传播到方法或者是构造函数的外面。
@@ -8,3 +10,85 @@ Java Exception
    Throwable是所有异常的根，java.lang.Throwable
    Error是错误，java.lang.Error
    Exception是异常，java.lang.Exception
+
+   二、Exception
+
+   一般分为Checked异常和Runtime异常，所有RuntimeException类及其子类的实例被称为Runtime异常，不属于该范畴的异常则被称为CheckedException。
+
+   ①Checked异常
+
+   只有java语言提供了Checked异常，Java认为Checked异常都是可以被处理的异常，所以Java程序必须显示处理Checked异常。如果程序没有处理Checked异常，该程序在编译时就会发生错误无法编译。这体现了Java的设计哲学：没有完善错误处理的代码根本没有机会被执行。对Checked异常处理方法有两种
+
+   1 当前方法知道如何处理该异常，则用try...catch块来处理该异常。
+   2 当前方法不知道如何处理，则在定义该方法是声明抛出该异常。
+   我们比较熟悉的Checked异常有
+
+   Java.lang.ClassNotFoundException
+   Java.lang.NoSuchMetodException
+   java.io.IOException
+
+   ②RuntimeException
+
+   Runtime如除数是0和数组下标越界等，其产生频繁，处理麻烦，若显示申明或者捕获将会对程序的可读性和运行效率影响很大。所以由系统自动检测并将它们交给缺省的异常处理程序。当然如果你有处理要求也可以显示捕获它们。
+   我们比较熟悉的RumtimeException类的子类有
+
+   Java.lang.ArithmeticException
+   Java.lang.ArrayStoreExcetpion
+   Java.lang.ClassCastException
+   Java.lang.IndexOutOfBoundsException
+   Java.lang.NullPointerException
+
+三、Error
+
+当程序发生不可控的错误时，通常做法是通知用户并中止程序的执行。与异常不同的是Error及其子类的对象不应被抛出。
+
+Error是throwable的子类，代表编译时间和系统错误，用于指示合理的应用程序不应该试图捕获的严重问题。
+
+Error由Java虚拟机生成并抛出，包括动态链接失败，虚拟机错误等。程序对其不做处理。
+
+2. Error Vs Exception
+
+
+   Error类和Exception类的父类都是throwable类，他们的区别是：
+
+   Error类一般是指与虚拟机相关的问题，如系统崩溃，虚拟机错误，内存空间不足，方法调用栈溢等。对于这类错误的导致的应用程序中断，仅靠程序本身无法恢复和和预防，遇到这样的错误，建议让程序终止。
+
+   Exception类表示程序可以处理的异常，可以捕获且可能恢复。遇到这类异常，应该尽可能处理异常，使程序恢复运行，而不应该随意终止异常。
+
+   Exception类又分为运行时异常（Runtime Exception）和受检查的异常(Checked Exception )，运行时异常;
+   ArithmaticException,IllegalArgumentException，编译能通过，但是一运行就终止了，程序不会处理运行时异常，出现这类异常，程序会终止。
+   而受检查的异常，要么用try。。。catch捕获，要么用throws字句声明抛出，交给它的父类处理，否则编译不会通过。
+
+ 
+
+   常见的异常;
+
+   ArrayIndexOutOfBoundsException 数组下标越界异常，
+
+   ArithmaticException 算数异常 如除数为零
+
+   NullPointerException 空指针异常
+
+   IllegalArgumentException 不合法参数异常
+
+3. throw Vs throws
+   (1)、Throw用于方法内部，Throws用于方法声明上
+   (2)、Throw后跟异常对象，Throws后跟异常类型
+   (3)、Throw后只能跟一个异常对象，Throws后可以一次声明多种异常类型
+
+4. 异常处理完成以后，Exception对象会发生什么变化？
+
+   Exception对象会在下一个垃圾回收过程中被回收掉。
+
+
+5. final vs finally vs finalize()
+
+   (1). final是关键字，final可以修饰类、方法、属性。
+        如果一个类被final修饰，那么这个类就是最终类，不能派生出新的子类，不能作为父类被继承，该类中的所有方法都不能被重写，但是final类中的成员变量是可以改变的，要想final类中的成员变量的不可以改变，必须给成员变量添加final修饰。因此，一个类不能同时被final和abstract修饰，这两个关键字相互矛盾。
+        如果final修饰方法，那么这个方法是最终方法，不允许任何子类重写该方法，但子类仍可以使用该方法，注意：final参数用来表示这个参数在这个函数内部不允许被修改。
+        final修饰属性，被final修饰的变量不可变。这里的不可变有两重含义：引用不可变和对象不可变。final指的是引用不可变，即它只能指向初始化时指向的那个对象，而不关心指向对象内容的变化。因此，被final修饰的变量必须初始化，该变量其实就是常量。
+   (2). finally作为异常处理的一部分，只能用在try/catch语句快中，finally代码块中的语句一定会被执行，经常被用来释放资源，如IO流和数据库资源的释放。
+   (3). finalize()是Object类的一个方法，该方法在Object类中声明：
+        protected void finalize() throws Throwable { }
+        在垃圾回收器执行时会调用被回收对象的finalize()方法，可以覆盖此方法来实现对其资源的回收。注意：一旦垃圾回收器准备释放某个对象占用的空间，将首先调该对象的
+        finalize()方法，并且在下一次垃圾回收动作发生时，才真正将该对象占用的内存回收。
